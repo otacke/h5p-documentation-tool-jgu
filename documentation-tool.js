@@ -2,7 +2,7 @@
  * Documentation tool module
  * @external {jQuery} $ H5P.jQuery
  */
-H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher) {
+H5P.DocumentationToolJGU = (function ($, NavigationMenu, JoubelUI, EventDispatcher) {
   // CSS Classes:
   var MAIN_CONTAINER = 'h5p-documentation-tool';
   var PAGES_CONTAINER = 'h5p-documentation-tool-page-container';
@@ -14,9 +14,9 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
    * @param {Object} params Behavior settings
    * @param {Number} id Content identification
    * @param {object} [extras] Saved state, metadata, etc.
-   * @returns {Object} DocumentationTool DocumentationTool instance
+   * @returns {Object} DocumentationToolJGU DocumentationToolJGU instance
    */
-  function DocumentationTool(params, id, extras) {
+  function DocumentationToolJGU(params, id, extras) {
     var self = this;
     this.$ = $(this);
     this.id = id;
@@ -61,7 +61,7 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
     // undefined for org users
     if (this.isSubmitButtonEnabled) {
       for (var i = 0; i < this.params.pagesList.length; i++) {
-        if (this.params.pagesList[i].library.split(' ')[0] === 'H5P.DocumentExportPage') {
+        if (this.params.pagesList[i].library.split(' ')[0] === 'H5P.DocumentExportPageJGU') {
           this.isTask = true;
         }
       }
@@ -71,7 +71,7 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
 
     /**
      * Initialize Goal assessment state
-     * @param {H5P.GoalsAssessmentPage} instance Goal assesment instance
+     * @param {H5P.GoalsAssessmentPageJGU} instance Goal assesment instance
      */
     self.setGoalAssesmentState = function (instance) {
       var assessmentGoals = self.getGoalAssessments(self.pageInstances);
@@ -83,8 +83,8 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
     };
   }
 
-  DocumentationTool.prototype = Object.create(EventDispatcher.prototype);
-  DocumentationTool.prototype.constructor = DocumentationTool;
+  DocumentationToolJGU.prototype = Object.create(EventDispatcher.prototype);
+  DocumentationToolJGU.prototype.constructor = DocumentationToolJGU;
 
   /**
    * Make a non-button element behave as a button. I.e handle enter and space
@@ -93,7 +93,7 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
    * @param  {H5P.jQuery} $element The "button" element
    * @param  {Function} callback
    */
-  DocumentationTool.handleButtonClick = function ($element, callback) {
+  DocumentationToolJGU.handleButtonClick = function ($element, callback) {
     $element.click(function (event) {
       callback.call($(this), event);
     });
@@ -111,7 +111,7 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
    *
    * @param {jQuery} $container The container which will be appended to.
    */
-  DocumentationTool.prototype.attach = function ($container) {
+  DocumentationToolJGU.prototype.attach = function ($container) {
 
     var self = this;
     this.currentPageIndex = 0;
@@ -136,7 +136,7 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
 
     this.navigationMenu = navigationMenu;
 
-    const goalAssesmentPageIndex = self.pageInstances.findIndex(pageInstance => pageInstance.libraryInfo.machineName === 'H5P.GoalsAssessmentPage');
+    const goalAssesmentPageIndex = self.pageInstances.findIndex(pageInstance => pageInstance.libraryInfo.machineName === 'H5P.GoalsAssessmentPageJGU');
     if (goalAssesmentPageIndex > -1) {
       self.setGoalAssesmentState(goalAssesmentPageIndex);
     }
@@ -149,7 +149,7 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
    * Creates the footer.
    * @returns {jQuery} $footer Footer element
    */
-  DocumentationTool.prototype.createFooter = function (enablePrevious, enableNext) {
+  DocumentationToolJGU.prototype.createFooter = function (enablePrevious, enableNext) {
     var $footer = $('<div>', {
       'class': FOOTER
     });
@@ -168,7 +168,7 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
    * @param {Number} moveDirection An integer for how many pages the button will move, and in which direction
    * @returns {*}
    */
-  DocumentationTool.prototype.createNavigationButton = function (moveDirection, enabled) {
+  DocumentationToolJGU.prototype.createNavigationButton = function (moveDirection, enabled) {
     var self = this;
     var type = 'next';
     var navigationLabel = this.params.i10n.nextLabel;
@@ -187,7 +187,7 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
       'html': '<span class="joubel-simple-rounded-button-text"></span>'
     });
 
-    DocumentationTool.handleButtonClick($navButton, function () {
+    DocumentationToolJGU.handleButtonClick($navButton, function () {
       self.movePage(self.currentPageIndex + moveDirection);
     });
 
@@ -198,7 +198,7 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
    * Populate container and array with page instances.
    * @returns {jQuery} Container
    */
-  DocumentationTool.prototype.createPages = function () {
+  DocumentationToolJGU.prototype.createPages = function () {
     var self = this;
 
     var $pagesContainer = $('<div>', {
@@ -220,7 +220,7 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
       }
 
       var singlePage = H5P.newRunnable(page, self.id, undefined, undefined, childExtras);
-      if (singlePage.libraryInfo.machineName === 'H5P.DocumentExportPage') {
+      if (singlePage.libraryInfo.machineName === 'H5P.DocumentExportPageJGU') {
         singlePage.setExportTitle(self.params.taskDescription);
         singlePage.setSumbitEnabled(this.isSubmitButtonEnabled);
       }
@@ -253,7 +253,7 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
   /**
    * Remove tabindex for main content.
    */
-  DocumentationTool.prototype.untabalize = function () {
+  DocumentationToolJGU.prototype.untabalize = function () {
     // Make all other elements in container not tabbable. When dialog is open,
     // it's like the elements behind does not exist.
     this.$tabbables = this.$mainContent.find('a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, *[tabindex], *[contenteditable]').each(function () {
@@ -271,7 +271,7 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
   /**
    * Set back tabindex for main container.
    */
-  DocumentationTool.prototype.tabalize = function () {
+  DocumentationToolJGU.prototype.tabalize = function () {
     if (this.$tabbables) {
       this.$tabbables.each(function () {
         var $element = $(this);
@@ -294,7 +294,7 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
    *
    * @param  {Object} event
    */
-  DocumentationTool.prototype.showHelpDialog = function (event) {
+  DocumentationToolJGU.prototype.showHelpDialog = function (event) {
     var self = this;
 
     self.untabalize();
@@ -316,14 +316,14 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
   /**
    * Hide me
    */
-  DocumentationTool.prototype.hide = function () {
+  DocumentationToolJGU.prototype.hide = function () {
     this.$mainContent.addClass('hidden');
   };
 
   /**
    * Show me
    */
-  DocumentationTool.prototype.show = function () {
+  DocumentationToolJGU.prototype.show = function () {
     this.$mainContent.removeClass('hidden');
   };
 
@@ -332,7 +332,7 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
    * @param {Number} toPageIndex Move to this page index
    * @param {boolean} [skipFocus] If true, do not focus page moved to.
    */
-  DocumentationTool.prototype.movePage = function (toPageIndex, skipFocus) {
+  DocumentationToolJGU.prototype.movePage = function (toPageIndex, skipFocus) {
     var self = this;
 
     // Invalid value
@@ -382,14 +382,14 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
    * Get current page instance
    * @return {Object} The page instance
    */
-  DocumentationTool.prototype.getCurrentPage = function () {
+  DocumentationToolJGU.prototype.getCurrentPage = function () {
     return this.pageInstances[this.currentPageIndex];
   };
 
   /**
    * Scroll to top if changing page and below y position is above threshold
    */
-  DocumentationTool.prototype.scrollToTop = function () {
+  DocumentationToolJGU.prototype.scrollToTop = function () {
     var staticScrollToTopPadding = 90;
     var yPositionThreshold = 75;
 
@@ -404,14 +404,14 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
    * @param {Object} toPageIndex Page object that will be updated
    * @param {Array} newGoals Array containing updated goals
    */
-  DocumentationTool.prototype.updatePage = function (toPageIndex, newGoals) {
+  DocumentationToolJGU.prototype.updatePage = function (toPageIndex, newGoals) {
     var self = this;
     var pageInstance = self.pageInstances[toPageIndex];
 
-    if (pageInstance.libraryInfo.machineName === 'H5P.GoalsAssessmentPage') {
+    if (pageInstance.libraryInfo.machineName === 'H5P.GoalsAssessmentPageJGU') {
       self.setGoals(self.pageInstances, newGoals);
     }
-    else if (pageInstance.libraryInfo.machineName === 'H5P.DocumentExportPage') {
+    else if (pageInstance.libraryInfo.machineName === 'H5P.DocumentExportPageJGU') {
 
       // Check if all required input fields are filled
       var allRequiredInputsAreFilled = self.checkIfAllRequiredInputsAreFilled(self.pageInstances);
@@ -429,7 +429,7 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
    *
    * @returns {Array} newGoals Merged goals list with updated assessments
    */
-  DocumentationTool.prototype.mergeGoals = function (newGoals, assessmentGoals) {
+  DocumentationToolJGU.prototype.mergeGoals = function (newGoals, assessmentGoals) {
     // Not an assessment page
     if (!assessmentGoals.length) {
       return newGoals;
@@ -453,10 +453,10 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
    * @param {Array} pageInstances Array of pages contained within the documentation tool
    * @returns {Array} goals Updated goals list
    */
-  DocumentationTool.prototype.getGoalAssessments = function (pageInstances) {
+  DocumentationToolJGU.prototype.getGoalAssessments = function (pageInstances) {
     var goals = [];
     pageInstances.forEach(function (page) {
-      if (page.libraryInfo.machineName === 'H5P.GoalsAssessmentPage') {
+      if (page.libraryInfo.machineName === 'H5P.GoalsAssessmentPageJGU') {
         goals.push(page.getAssessedGoals());
       }
     });
@@ -467,7 +467,7 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
    * Retrieves all input fields from the documentation tool
    * @returns {Array} inputArray Array containing all inputs of the documentation tool
    */
-  DocumentationTool.prototype.getDocumentExportInputs = function (pageInstances) {
+  DocumentationToolJGU.prototype.getDocumentExportInputs = function (pageInstances) {
     var inputArray = [];
     pageInstances.forEach(function (page) {
       var pageInstanceInput = [];
@@ -486,7 +486,7 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
    * Checks if all required inputs are filled
    * @returns {boolean} True if all required inputs are filled
    */
-  DocumentationTool.prototype.checkIfAllRequiredInputsAreFilled = function (pageInstances) {
+  DocumentationToolJGU.prototype.checkIfAllRequiredInputsAreFilled = function (pageInstances) {
     var allRequiredInputsAreFilled = true;
     pageInstances.forEach(function (page) {
       if (page.libraryInfo.machineName === 'H5P.StandardPage') {
@@ -505,10 +505,10 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
    * @param {Array} pageInstances Array containing all pages.
    * @returns {Array} goals Updated goals list.
    */
-  DocumentationTool.prototype.getGoals = function (pageInstances) {
+  DocumentationToolJGU.prototype.getGoals = function (pageInstances) {
     var goals = [];
     pageInstances.forEach(function (page) {
-      if (page.libraryInfo.machineName === 'H5P.GoalsPage') {
+      if (page.libraryInfo.machineName === 'H5P.GoalsPageJGU') {
         goals.push(page.getGoals());
       }
     });
@@ -520,9 +520,9 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
    * @param {Array} pageInstances Page instances
    * @param {Array} goals Array of goals.
    */
-  DocumentationTool.prototype.setGoals = function (pageInstances, goals) {
+  DocumentationToolJGU.prototype.setGoals = function (pageInstances, goals) {
     pageInstances.forEach(function (page) {
-      if (page.libraryInfo.machineName === 'H5P.GoalsAssessmentPage') {
+      if (page.libraryInfo.machineName === 'H5P.GoalsAssessmentPageJGU') {
         page.updateAssessmentGoals(goals);
       }
     });
@@ -532,9 +532,9 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
    * Sets the output for all document export pages
    * @param {Array} inputs Array of input strings
    */
-  DocumentationTool.prototype.setDocumentExportOutputs  = function (pageInstances, inputs) {
+  DocumentationToolJGU.prototype.setDocumentExportOutputs  = function (pageInstances, inputs) {
     pageInstances.forEach(function (page) {
-      if (page.libraryInfo.machineName === 'H5P.DocumentExportPage') {
+      if (page.libraryInfo.machineName === 'H5P.DocumentExportPageJGU') {
         page.updateOutputFields(inputs);
       }
     });
@@ -544,7 +544,7 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
    * Sets the output for all document export pages
    * @param {Array} inputs Array of input strings
    */
-  DocumentationTool.prototype.setDocumentExportGoals  = function (pageInstances, newGoals) {
+  DocumentationToolJGU.prototype.setDocumentExportGoals  = function (pageInstances, newGoals) {
     var assessmentPageTitle = '';
 
     // If no goals assessment page or no goals are assessed,
@@ -553,7 +553,7 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
       return page.some(function (goal) {
         return goal.goalAnswer() !== -1;
       });
-    }) ? 'H5P.GoalsAssessmentPage' : 'H5P.GoalsPage';
+    }) ? 'H5P.GoalsAssessmentPageJGU' : 'H5P.GoalsPageJGU';
 
 
     pageInstances.forEach(function (page) {
@@ -563,7 +563,7 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
     });
 
     pageInstances.forEach(function (page) {
-      if (page.libraryInfo.machineName === 'H5P.DocumentExportPage') {
+      if (page.libraryInfo.machineName === 'H5P.DocumentExportPageJGU') {
         page.updateExportableGoals({inputArray: newGoals, title: assessmentPageTitle});
       }
     });
@@ -573,7 +573,7 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
    * Sets the required inputs filled boolean in all document export pages
    * @param {object[]} pageInstances All page instances.
    */
-  DocumentationTool.prototype.setRequiredInputsFilled  = function (pageInstances) {
+  DocumentationToolJGU.prototype.setRequiredInputsFilled  = function (pageInstances) {
     // Get titles of pages that contain required fields that are not filled
     const titlesPagesIncomplete = this.getIncompletePages().map(function (page) {
       return page.getTitle();
@@ -581,7 +581,7 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
 
     // Update document export page
     pageInstances.forEach(function (page) {
-      if (page.libraryInfo.machineName === 'H5P.DocumentExportPage') {
+      if (page.libraryInfo.machineName === 'H5P.DocumentExportPageJGU') {
         page.updateRequiredInputsFilled(titlesPagesIncomplete);
       }
       else if (page.libraryInfo.machineName === 'H5P.StandardPage') {
@@ -594,7 +594,7 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
    * Get page instances with required fields that are not filled.
    * @return {object[]} Page instances with required fields that are not filled.
    */
-  DocumentationTool.prototype.getIncompletePages = function () {
+  DocumentationToolJGU.prototype.getIncompletePages = function () {
     return this.pageInstances.filter(function (page) {
       return page.libraryInfo.machineName === 'H5P.StandardPage' &&
         !page.requiredInputsIsFilled();
@@ -604,7 +604,7 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
   /**
    * Resize function for responsiveness.
    */
-  DocumentationTool.prototype.resize = function () {
+  DocumentationToolJGU.prototype.resize = function () {
     // Width calculations
     this.adjustDocumentationToolWidth();
     this.adjustNavBarHeight();
@@ -613,7 +613,7 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
   /**
    * Adjusts navigation menu minimum height
    */
-  DocumentationTool.prototype.adjustNavBarHeight = function () {
+  DocumentationToolJGU.prototype.adjustNavBarHeight = function () {
     if (!this.$navigationMenuHeader) {
       return;
     }
@@ -628,7 +628,7 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
   /**
    * Resizes navigation menu depending on task width
    */
-  DocumentationTool.prototype.adjustDocumentationToolWidth = function () {
+  DocumentationToolJGU.prototype.adjustDocumentationToolWidth = function () {
     if (!this.$inner) {
       return;
     }
@@ -644,7 +644,7 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
    * We do this because we can only trigger answered events once per submission
    * therefore, we have to trigger all of them simultaneously with one function.
    */
-  DocumentationTool.prototype.triggerAnsweredEvents = function () {
+  DocumentationToolJGU.prototype.triggerAnsweredEvents = function () {
     this.pageInstances.forEach(function (page) {
       if (page.triggerAnsweredEvents) {
         page.triggerAnsweredEvents();
@@ -656,7 +656,7 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
    * Generate xAPI object definition used in xAPI statements.
    * @return {Object}
    */
-  DocumentationTool.prototype.getxAPIDefinition = function () {
+  DocumentationToolJGU.prototype.getxAPIDefinition = function () {
     var definition = {};
 
     definition.interactionType = 'compound';
@@ -665,7 +665,7 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
       'en-US': ''
     };
     definition.extensions = {
-      'https://h5p.org/x-api/h5p-machine-name': 'H5P.DocumentationTool'
+      'https://h5p.org/x-api/h5p-machine-name': 'H5P.DocumentationToolJGU'
     };
 
     return definition;
@@ -674,7 +674,7 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
   /**
    * Add the question itself to the definition part of an xAPIEvent
    */
-  DocumentationTool.prototype.addQuestionToXAPI = function (xAPIEvent) {
+  DocumentationToolJGU.prototype.addQuestionToXAPI = function (xAPIEvent) {
     var definition = xAPIEvent.getVerifiedStatementValue(['object', 'definition']);
     $.extend(definition, this.getxAPIDefinition());
   };
@@ -685,7 +685,7 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
    * @param {Object} metaContentType
    * @returns {array}
    */
-  DocumentationTool.prototype.getXAPIDataFromChildren = function () {
+  DocumentationToolJGU.prototype.getXAPIDataFromChildren = function () {
 
     var children = [];
 
@@ -704,7 +704,7 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
    *
    * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-6}
    */
-  DocumentationTool.prototype.getXAPIData = function () {
+  DocumentationToolJGU.prototype.getXAPIData = function () {
     var xAPIEvent = this.createXAPIEventTemplate('answered');
     this.addQuestionToXAPI(xAPIEvent);
     return {
@@ -718,7 +718,7 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
    *
    * @return {string} title.
    */
-  DocumentationTool.prototype.getTitle = function () {
+  DocumentationToolJGU.prototype.getTitle = function () {
     return H5P.createTitle((this.extras.metadata && this.extras.metadata.title) ? this.extras.metadata.title : 'Documentation Tool');
   };
 
@@ -727,7 +727,7 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
    *
    * @return {object} Current state.
    */
-  DocumentationTool.prototype.getCurrentState = function () {
+  DocumentationToolJGU.prototype.getCurrentState = function () {
     const childrenStates = this.pageInstances.map(function (instance) {
       return (typeof instance.getCurrentState === 'function') ?
         instance.getCurrentState() :
@@ -740,15 +740,15 @@ H5P.DocumentationTool = (function ($, NavigationMenu, JoubelUI, EventDispatcher)
     };
   };
 
-  DocumentationTool.prototype.resetTask = function () {
+  DocumentationToolJGU.prototype.resetTask = function () {
     this.pageInstances.forEach(function (instance) {
       typeof instance.resetTask === 'function' && instance.resetTask();
     });
-    
+
     if (this.$pagesArray) { // only reset DOM if loaded
       this.movePage(0);
     }
   };
 
-  return DocumentationTool;
-}(H5P.jQuery, H5P.DocumentationTool.NavigationMenu, H5P.JoubelUI, H5P.EventDispatcher));
+  return DocumentationToolJGU;
+}(H5P.jQuery, H5P.DocumentationToolJGU.NavigationMenu, H5P.JoubelUI, H5P.EventDispatcher));

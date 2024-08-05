@@ -29,9 +29,9 @@
       "description": "Library for this slide.",
       "options": [
         "H5P.StandardPage 1.5",
-        "H5P.GoalsPage 1.5",
-        "H5P.GoalsAssessmentPage 1.4",
-        "H5P.DocumentExportPage 1.5"
+        "H5P.GoalsPageJGU 1.5",
+        "H5P.GoalsAssessmentPageJGU 1.4",
+        "H5P.DocumentExportPageJGU 1.5"
       ]
     }
   },

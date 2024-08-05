@@ -1,5 +1,5 @@
 {
-  "title": "Documentation Tool",
+  "title": "Documentation Tool (JGU)",
   "description": "Documentation tool for educational assessment.",
   "majorVersion": 1,
   "minorVersion": 8,
@@ -7,7 +7,7 @@
   "runnable": 1,
   "author": "Joubel",
   "license": "MIT",
-  "machineName": "H5P.DocumentationTool",
+  "machineName": "H5P.DocumentationToolJGU",
   "embedTypes": [
     "iframe"
   ],

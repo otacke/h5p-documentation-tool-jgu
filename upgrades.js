@@ -1,7 +1,7 @@
 /** @namespace H5PUpgrades */
 var H5PUpgrades = H5PUpgrades || {};
 
-H5PUpgrades['H5P.DocumentationTool'] = (function () {
+H5PUpgrades['H5P.DocumentationToolJGU'] = (function () {
   return {
     1: {
       7: function (parameters, finished, extras) {
