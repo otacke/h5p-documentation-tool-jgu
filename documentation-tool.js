@@ -219,6 +219,21 @@ H5P.DocumentationToolJGU = (function ($, NavigationMenu, JoubelUI, EventDispatch
         childExtras.previousState = this.previousState.childrenStates[i]
       }
 
+      // Inject average score template from GoalsAssessmentPage into DocumentExportPage
+      if (page.library.split(' ')[0] === 'H5P.DocumentExportPageJGU') {
+        const goalsAssessmentParams = (this.params.pagesList ?? [])
+        .filter(
+          page => page.library.split(' ')[0] === 'H5P.GoalsAssessmentPageJGU'
+        ).shift();
+
+        const averageScoreTemplate = goalsAssessmentParams ?
+          goalsAssessmentParams.params.l10n?.averageScore :
+          '';
+
+        page.params.l10n = page.params.l10n || {};
+        page.params.l10n.averageScore = averageScoreTemplate;
+      }
+
       var singlePage = H5P.newRunnable(page, self.id, undefined, undefined, childExtras);
       if (singlePage.libraryInfo.machineName === 'H5P.DocumentExportPageJGU') {
         singlePage.setExportTitle(self.params.taskDescription);
