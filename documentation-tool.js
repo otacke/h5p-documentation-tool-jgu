@@ -376,6 +376,8 @@ H5P.DocumentationToolJGU = (function ($, NavigationMenu, JoubelUI, EventDispatch
 
     // Set focus on the new page after navigating to it
     var pageInstance = self.pageInstances[toPageIndex];
+    pageInstance?.update?.();
+
     if (pageInstance.focus && !skipFocus) {
       if (this.isRoot()) {
         // Trigger focus on text tick
