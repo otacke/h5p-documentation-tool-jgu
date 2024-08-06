@@ -257,7 +257,9 @@ H5P.DocumentationToolJGU = (function ($, NavigationMenu, JoubelUI, EventDispatch
          * it may be used in Column which needs a score that's not null.
          */
         var completedEvent = self.createXAPIEventTemplate('completed');
-        completedEvent.setScoredResult(0, 0);
+        completedEvent.setScoredResult(
+          self.getScore(), self.getMaxScore(), this, true, true
+        );
         self.trigger(completedEvent);
       });
     }
@@ -703,7 +705,6 @@ H5P.DocumentationToolJGU = (function ($, NavigationMenu, JoubelUI, EventDispatch
    * @returns {array}
    */
   DocumentationToolJGU.prototype.getXAPIDataFromChildren = function () {
-
     var children = [];
 
     this.pageInstances.forEach(function (page) {
@@ -716,6 +717,30 @@ H5P.DocumentationToolJGU = (function ($, NavigationMenu, JoubelUI, EventDispatch
   };
 
   /**
+   * Get current score.
+   * @returns {number} Current score.
+   * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-2}
+   */
+  DocumentationToolJGU.prototype.getScore = function() {
+    return this.pageInstances?.find(instance => {
+      return instance.libraryInfo.machineName === 'H5P.DocumentExportPageJGU';
+    })?.getScore() ?? 0;
+  }
+
+  /**
+   * Get maximum possible score.
+   * @returns {number} Maximum possible score.
+   * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-3}
+   */
+  DocumentationToolJGU.prototype.getMaxScore = function () {
+    const highestRatingString = this.params?.pagesList?.find(
+      page => page.library.split(' ')[0] === 'H5P.GoalsAssessmentPageJGU'
+    )?.params?.veryHighRating;
+
+    return parseFloat(highestRatingString) || 0;
+  }
+
+  /**
    * Get xAPI data.
    * Contract used by report rendering engine.
    *
@@ -723,6 +748,15 @@ H5P.DocumentationToolJGU = (function ($, NavigationMenu, JoubelUI, EventDispatch
    */
   DocumentationToolJGU.prototype.getXAPIData = function () {
     var xAPIEvent = this.createXAPIEventTemplate('answered');
+
+    xAPIEvent.setScoredResult(
+      this.getScore(),
+      this.getMaxScore(),
+      this,
+      true,
+      this.getScore() === this.getMaxScore()
+    );
+
     this.addQuestionToXAPI(xAPIEvent);
     return {
       statement: xAPIEvent.data.statement,
